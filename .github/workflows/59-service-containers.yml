@@ -23,8 +23,19 @@ jobs:
           - 6379:6379
 
     steps:
-      - name: Connect to Redis
+      - name: Install Redis CLI
+        run: sudo apt-get update && sudo apt-get install -y redis-tools
+
+      - name: Redis live example (set/get)
         run: |
-          # Use 'localhost' as the hostname if ports are mapped
-          # Or use the service name 'redis' if running in a container job
-          echo "PING" | nc -w 1 localhost 6379
+          redis-cli -h localhost -p 6379 ping
+          redis-cli -h localhost -p 6379 set exam "gh-actions"
+          value=$(redis-cli -h localhost -p 6379 get exam)
+          echo "Redis value: $value"
+
+          if [ "$value" != "gh-actions" ]; then
+            echo "Redis integration test failed"
+            exit 1
+          fi
+
+          echo "Redis integration test passed"
