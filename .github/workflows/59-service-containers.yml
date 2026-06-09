@@ -1,0 +1,30 @@
+name: 59 - Service Containers
+# This workflow demonstrates using service containers (e.g., Redis, Postgres).
+# Exam Tip: Service containers are useful for integration testing.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-with-redis:
+    runs-on: ubuntu-latest
+    
+    # Service containers are started before the job steps
+    services:
+      redis:
+        image: redis
+        # Wait for redis to be ready
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Connect to Redis
+        run: |
+          # Use 'localhost' as the hostname if ports are mapped
+          # Or use the service name 'redis' if running in a container job
+          echo "PING" | nc -w 1 localhost 6379

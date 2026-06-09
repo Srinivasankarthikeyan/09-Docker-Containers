@@ -1,0 +1,18 @@
+name: 55 - Docker Build Workflow
+# This workflow shows how to build a Docker image.
+# Exam Tip: You can use standard docker commands or the 'docker/build-push-action'.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Build Docker Image
+        run: docker build -t my-app:latest .
+        
+      - name: List Images
+        run: docker images

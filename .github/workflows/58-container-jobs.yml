@@ -1,0 +1,26 @@
+name: 58 - Container Jobs
+# This workflow demonstrates running a job inside a Docker container.
+# Exam Tip: Use 'container' to ensure a consistent environment regardless of the runner's OS.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  container-job:
+    runs-on: ubuntu-latest
+    # The entire job runs inside this container
+    container:
+      image: node:18-alpine
+      env:
+        NODE_ENV: production
+      ports:
+        - 80
+      volumes:
+        - my_docker_volume:/data
+      options: --cpus 1
+      
+    steps:
+      - name: Check Environment
+        run: |
+          node -v
+          cat /etc/os-release

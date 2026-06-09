@@ -1,0 +1,23 @@
+name: 56 - Docker Login
+# This workflow shows how to authenticate with a Docker registry.
+# Exam Tip: 'docker/login-action' is the recommended way to authenticate.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - run: echo "Successfully logged into GitHub Container Registry"
